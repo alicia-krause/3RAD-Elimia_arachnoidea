@@ -1,0 +1,17 @@
+1) First going to convert STACKS populations output 'populations.samples.fa' using Multiple SNPs per Locus:
+      python3 Convert_Stacks_Fasta_to_Loci.py --fast Elimia_R80_maf025_Multi.populations.samples.fa --outdir Fasta_to_Loci/ -a consensus --variable
+
+2) Remove gaps in files tht may arise from previous code:
+      sh noGaps_Nucleotides.sh
+
+3) Rename file extentions from .fasta.nogaps to .fas as requried by FasConCat:
+      	3) Rename .fasta.nogaps files to .fas: 
+	for file in *.fasta.nogaps; do
+    mv -- "$file" "${file%.fasta.nogaps}.fas"
+done
+
+4) Run FasConCat which concatenates .fas fies into reduced SuperMatrix Files:
+      FasConCat: perl /usr/local/genome/bin/FASconCAT-G.pl -p -p -l -s
+
+5) Move SuperMatrix files into new folder and run IQTree code in that folder:
+      /home/alk0077/bin/iqtree-3.0.1-Linux-intel/bin/iqtree3 -s FcC_supermatrix.phy -fast --prefix SpE_R80_Phylo_M_IQTree -m GTR+G -nt 40
